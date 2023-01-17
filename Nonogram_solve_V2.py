@@ -16,9 +16,7 @@ def grille_coherante_C(G, nColonnes, All_colonnes_possible):
 
 
 def solve(Lignes, Colones):
-        nLignes = len(Colones)
-        nColones = len(Lignes)
-        
+
         def info(Liste, taille):
                 Liste_info = []
                 Sum = 0
@@ -30,34 +28,38 @@ def solve(Lignes, Colones):
                 Liste_info = sorted(Liste_info)
                 return Liste_info, Sum
 
-        Lignes_info,sumL = info(Lignes, nLignes)
-        Colones_info,sumC = info(Colones, nColones)
-        
-        G = [[[-1 for i in range(nLignes)] for j in range(nColones)]]
-        if sumL < sumC :
-                All_colonnes_possible = create_all_poss(Colones,nColones)
+        def main_branch(Liste, taille_1, taille_2, Liste_infos, fonction):
+                All_listes_possible = create_all_poss_bis(Liste,taille_1)
                 for rangee in Lignes_info :
                         print('rangee', rangee)
                         G_poss = G
                         G = []
-                        L = create_all_poss((rangee[2],),nLignes)[0]
+                        L = create_all_poss_bis((rangee[2],),taille_2)[0]
+                        if v:
+                                print('(G){}*{}(L)={}'.format(len(G_poss), len(L), len(G_poss)*len(L)))
+                                n = 0
                         for g in G_poss :
                                 for l in L :
+                                        if v:
+                                                n += 1
+                                                if n%1000 == 0: print(n) 
                                         G_1 = change_ligne(g, rangee[1], l)
-                                        if grille_coherante_C(G_1, nColones, All_colonnes_possible):
+                                        if fonction(G_1, taille_1, All_listes_possible):
                                                 G += [G_1]
+        
+        v = 1
+        
+        nLignes = len(Colones)
+        nColones = len(Lignes)
+
+        Lignes_info,sumL = info(Lignes, nLignes)
+        Colones_info,sumC = info(Colones, nColones)
+        
+        G = [[[-1 for i in range(len(Colones))] for j in range(len(Lignes))]]
+        if sumL < sumC :
+                main_branch(Colonnes, nColones, nLignes, grille_coherante_C)
         else :
-                All_lignes_possible = create_all_poss(Lignes,nLignes)
-                for rangee in Colones_info:
-                        print('rangee', rangee)
-                        G_poss = G
-                        G = []
-                        L = create_all_poss((rangee[2],),nColones)[0]
-                        for g in G_poss :
-                                for l in L :
-                                        G_1 = change_colone(g, rangee[1], l)
-                                        if grille_coherante_L(G_1, nLignes, All_lignes_possible) :
-                                                G += [G_1]
+                main_branch(Lignes, nLignes, nColones, grille_coherante_L)
                 
         G_1 = []
         for i in G :

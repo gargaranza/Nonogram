@@ -116,13 +116,12 @@ def create_all_poss_bis(Liste, taille):
                 
         return X
 
-
-def liste_coherante(Cases_fixees, Listes_possibles):
-        def coherant(L1,L2):
-                for i in range(len(L1)):
-                        if (L1[i], L2[i]) == (0,1) or (L1[i], L2[i]) == (1,0): return False
+def coherant(L1,L2):
+                for l1, l2 in zip(L1, L2):
+                        if (l1, l2) == (0,1) or (l1, l2) == (1,0): return False
                 return True
 
+def liste_coherante(Cases_fixees, Listes_possibles):
         for liste in Listes_possibles:
                 if coherant(liste, Cases_fixees): return True
         return False
