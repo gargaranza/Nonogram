@@ -4,6 +4,7 @@ from Utilitaires_nonogram import affiche
 import Nonogram_solve_V1 as NV1
 import Nonogram_solve_V2 as NV2
 import Nonogram_solve_V3 as NV3
+import Nonogram_solve_V4 as NV4
 
 
 def str_to_tuple(S) : return tuple(tuple([int(k) for k in i.split(',')]) for i in S.split('\n') if i != '')
@@ -25,6 +26,8 @@ def switch_method(method):
             return (lambda C, L: NV2.solve(C, L, True))
         case 'V3':
             return NV3.solve
+        case 'V4':
+            return NV4.solve
         case _:
             print('Method not found')
     
@@ -38,23 +41,25 @@ def test_speed(method_1, method_2, file):
     switch_method(method_2)(L, C)
     F = time()
         
-    print('time v2: {}\ntime v2_bis: {}'.format(sec_to_time(int(M-D)), sec_to_time(int(F-M))))
+    print('time {}: {}\ntime {}: {}'.format(method_1, sec_to_time(int(M-D)), method_2, sec_to_time(int(F-M))))
 
 
 def solve(method, file):
     (C, L) = file_to_list(file)
 
     D = time()
-    Grille = switch_method(method)(L, C)
+    Grilles = switch_method(method)(L, C)
     F = time()
-    
-    affiche(Grille)
-    print('time: {}'.format(sec_to_time(int(F-D)))
+
+    for g in Grilles:
+        affiche(g)
+    print('time: {}'.format(sec_to_time(int(F-D))))
 
 if __name__ == '__main__':
-    solve('V2_bis', '30x30_Deer')
+    solve('V4', '30x30_Deer')
+    #test_speed('V2_bis', 'V4', '25x25_rand')
     
-    
+
 
 
 

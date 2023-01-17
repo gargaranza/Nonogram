@@ -3,7 +3,7 @@ from Utilitaires_nonogram import *
 
 
 
-def solve(Lignes, Colones, bis=False):
+def solve(Lignes, Colonnes):
 
     def info(Liste, taille, l) :
         Liste_info = []
@@ -16,13 +16,12 @@ def solve(Lignes, Colones, bis=False):
 
     v=0
     
-    Liste_infos = fusion(info(Lignes, len(Colones), 'L'), info(Colones, len(Lignes), 'C'))
+    Liste_infos = fusion(info(Lignes, len(Colonnes), 'L'), info(Colonnes, len(Lignes), 'C'))
     
-    all_poss = (create_all_poss_bis if bis else create_all_poss)
-    All_lignes_possible = all_poss(Lignes,len(Colones))
-    All_colonnes_possible = all_poss(Colones,len(Lignes))
+    All_lignes_possible = create_all_poss_bis(Lignes,len(Colonnes))
+    All_colonnes_possible = create_all_poss_bis(Colonnes,len(Lignes))
 
-    G = [[[-1 for i in range(len(Colones))] for j in range(len(Lignes))]]
+    G = [[[-1 for i in range(len(Colonnes))] for j in range(len(Lignes))]]
     for rangee in Liste_infos :
         print('rangee', rangee)
         G_poss = G
@@ -38,8 +37,8 @@ def solve(Lignes, Colones, bis=False):
                 if v:
                     n += 1
                     if n%100000 == 0: print('{}({}%)'.format(n, n/prod))
-                if coherant((ligne if rangee[2] == 'L' else colone)(g, rangee[1]), l):
-                    G += [(change_ligne if rangee[2] == 'L' else change_colone)(g, rangee[1], l)]
+                if coherant((ligne if rangee[2] == 'L' else colonne)(g, rangee[1]), l):
+                    G += [(change_ligne if rangee[2] == 'L' else change_colonne)(g, rangee[1], l)]
 
     return G
 

@@ -3,7 +3,7 @@ from Outils import *
 
 def ligne(G, n): return G[n]
 
-def colone(G, n):
+def colonne(G, n):
         if type(G[0]) == int : return [G[n]]
         return [i[n] for i in G]
 
@@ -13,7 +13,7 @@ def change_ligne(G, n, liste):
         g[n] = list(liste)
         return g
 
-def change_colone(G, n, liste):
+def change_colonne(G, n, liste):
         g = [[i for i in j] for j in G]
         for i in range(len(g)) :
                 g[i][n] = liste[i]
@@ -128,11 +128,11 @@ def liste_coherante(Cases_fixees, Listes_possibles):
 
 
 
-def grille_correcte(G, Lignes, Colones):
+def grille_correcte(G, Lignes, Colonnes):
         for i, e in enumerate(Lignes):
                 if not(liste_correcte(ligne(G, i), e, len(G[0]), True)): return False
-        for i, e in enumerate(Colones):
-                if not(liste_correcte(colone(G, i), e, len(G), True)): return False
+        for i, e in enumerate(Colonnes):
+                if not(liste_correcte(colonne(G, i), e, len(G), True)): return False
         return True
 
 
